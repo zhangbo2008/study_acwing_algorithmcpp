@@ -58,17 +58,17 @@ int main()
     g[0] = 1;
     for (int i = 1; i <= n; ++ i)//最外层永远是遍历所有物品.
     {
-        for (int j = m; j >= v[i]; -- j)//0, 1背包所以逆向遍历总体积.
+        for (int j = m; j >= v[i]; -- j)//0, 1背包所以逆向遍历总体积.注意结束条件是                       j>=v[i],因为j如果小于当前物品就没必要再计算这个背包是否还能放当前物品了.他已经没有体积放下了.
         {
-            int temp = max(f[j], f[j - v[i]] + w[i]), c = 0;
-            if (temp == f[j]) c = (c + g[j]) % mod;
-            if (temp == f[j - v[i]] + w[i]) c = (c + g[j - v[i]]) % mod;
-            f[j] = temp, g[j] = c;
+            int temp = max(f[j], f[j - v[i]] + w[i]), c = 0;//temp表示当前策略的最优解
+            if (temp == f[j]) c = (c + g[j]) % mod;//如果最优解从f[j]来,那么count就加g[j]
+            if (temp == f[j - v[i]] + w[i]) c = (c + g[j - v[i]]) % mod;//如果从另外一个来就加上另外一个的计数器.//如果2个都一样就都加上.
+            f[j] = temp, g[j] = c;//把最优解和计数器更新上.
         }
     }
 
 
-
+//f[m]是最优解,但是f[其他]也可能是最优解,所以求和一下即可.
     int res = 0;
     for (int j = 0; j <= m; ++ j)
     {
